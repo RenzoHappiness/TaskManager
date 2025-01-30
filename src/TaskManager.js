@@ -6,12 +6,13 @@ const ITEM_TYPE = "TASK";
 
 const TaskManager = () => {
   const [tasks, setTasks] = useState([
-    { id: 1, text: "📌 React lernen" },
-    { id: 2, text: "📂 Drag & Drop hinzufügen" },
-    { id: 3, text: "🚀 Projekt auf GitHub hochladen" },
-    { id: 4, text: "🧑‍🎨 Balsamiq-Stil hinzufügen" },
+    { id: 1, text: "📌 React lernen", priority: 2 },
+    { id: 2, text: "📂 Drag & Drop hinzufügen", priority: 1 },
+    { id: 3, text: "🚀 Projekt auf GitHub hochladen", priority: 3 },
+    { id: 4, text: "🧑‍🎨 Balsamiq-Stil hinzufügen", priority: 1 },
   ]);
   const [newTask, setNewTask] = useState("");
+  const [newPriority, setNewPriority] = useState(1);
 
   const moveTask = (dragIndex, hoverIndex) => {
     const updatedTasks = [...tasks];
@@ -22,13 +23,17 @@ const TaskManager = () => {
 
   const addTask = () => {
     if (newTask.trim() !== "") {
-      setTasks([...tasks, { id: Date.now(), text: `📌 ${newTask}` }]);
+      setTasks([...tasks, { id: Date.now(), text: `📌 ${newTask}`, priority: newPriority }]);
       setNewTask("");
     }
   };
 
   const removeTask = (id) => {
     setTasks(tasks.filter((task) => task.id !== id));
+  };
+
+  const sortTasksByPriority = () => {
+    setTasks([...tasks].sort((a, b) => b.priority - a.priority));
   };
 
   return (
@@ -44,8 +49,14 @@ const TaskManager = () => {
               placeholder="+ Neue Aufgabe..."
               style={{ flex: 1, padding: "5px", border: "1px solid black" }}
             />
+            <select value={newPriority} onChange={(e) => setNewPriority(Number(e.target.value))}>
+              <option value={1}>Prio: Low</option>
+              <option value={2}>Prio: Medium</option>
+              <option value={3}>Prio: High</option>
+            </select>
             <button onClick={addTask} style={{ padding: "5px", backgroundColor: "black", color: "white", border: "none", cursor: "pointer" }}>➕</button>
           </div>
+          <button onClick={sortTasksByPriority} style={{ marginBottom: "10px", padding: "5px", backgroundColor: "black", color: "white", border: "none", cursor: "pointer", width: "100%" }}>Sortieren nach Priorität</button>
           {tasks.map((task, index) => (
             <TaskItem key={task.id} index={index} task={task} moveTask={moveTask} removeTask={removeTask} />
           ))}
@@ -93,7 +104,7 @@ const TaskItem = ({ task, index, moveTask, removeTask }) => {
       }}
     >
       <span style={{ cursor: "grab", marginRight: "10px" }}>⋮</span>
-      {task.text}
+      {task.text} ({task.priority})
       <button onClick={() => removeTask(task.id)} style={{ background: "none", border: "none", fontSize: "16px", cursor: "pointer" }}>❌</button>
     </div>
   );
