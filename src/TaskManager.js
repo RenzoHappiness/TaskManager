@@ -91,7 +91,7 @@ const TaskItem = ({ task, index, moveTask, removeTask }) => {
       style={{
         padding: "10px",
         marginBottom: "5px",
-        backgroundColor: isDragging ? "#ffc107" : "white",
+        backgroundColor: isDragging ? "#ffc107" : task.priority === 3 ? "#ffcccb" : task.priority === 2 ? "#ffffcc" : "#ccffcc",
         border: isDragging ? "2px dashed black" : "2px solid black",
         cursor: "grab",
         display: "flex",
