@@ -1,18 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
 const ITEM_TYPE = "TASK";
 
 const TaskManager = () => {
-  const [tasks, setTasks] = useState([
-    { id: 1, text: "📌 React lernen", priority: 2 },
-    { id: 2, text: "📂 Drag & Drop hinzufügen", priority: 1 },
-    { id: 3, text: "🚀 Projekt auf GitHub hochladen", priority: 3 },
-    { id: 4, text: "🧑‍🎨 Balsamiq-Stil hinzufügen", priority: 1 },
-  ]);
+  const [tasks, setTasks] = useState(() => {
+    const savedTasks = localStorage.getItem("tasks");
+    return savedTasks ? JSON.parse(savedTasks) : [];
+  });
   const [newTask, setNewTask] = useState("");
   const [newPriority, setNewPriority] = useState(1);
+
+  useEffect(() => {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  }, [tasks]);
 
   const moveTask = (dragIndex, hoverIndex) => {
     const updatedTasks = [...tasks];
@@ -50,9 +52,9 @@ const TaskManager = () => {
               style={{ flex: 1, padding: "5px", border: "1px solid black" }}
             />
             <select value={newPriority} onChange={(e) => setNewPriority(Number(e.target.value))}>
-              <option value={1}>Prio: Low</option>
-              <option value={2}>Prio: Medium</option>
-              <option value={3}>Prio: High</option>
+              <option value={1}>Niedrige Priorität</option>
+              <option value={2}>Mittlere Priorität</option>
+              <option value={3}>Hohe Priorität</option>
             </select>
             <button onClick={addTask} style={{ padding: "5px", backgroundColor: "black", color: "white", border: "none", cursor: "pointer" }}>➕</button>
           </div>
