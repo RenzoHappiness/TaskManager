@@ -6,10 +6,11 @@ const ITEM_TYPE = "TASK";
 
 const TaskManager = () => {
   const [tasks, setTasks] = useState([
-    { id: 1, text: "React lernen" },
-    { id: 2, text: "Drag &Drop hinzufügen" },
-    { id: 3, text: "Projekt auf GitHub hochladen" },
-  ]);
+    { id: 1, text: "📌 React lernen" },
+    { id: 2, text: "📂 Drag & Drop hinzufügen" },
+    { id: 3, text: "🚀 Projekt auf GitHub hochladen" },
+    { id: 4, text: "🧑‍🎨 Balsamiq-Stil hinzufügen" },
+    ]);
   const [newTask, setNewTask] = useState("");
 
   const moveTask = (dragIndex, hoverIndex) => {
@@ -21,7 +22,7 @@ const TaskManager = () => {
 
   const addTask = () => {
     if (newTask.trim() !== "") {
-      setTasks([...tasks, { id: Date.now(), text: newTask }]);
+      setTasks([...tasks, { id: Date.now(), text: `📌 ${newTask}` }]);
       setNewTask("");
     }
   };
@@ -32,19 +33,23 @@ const TaskManager = () => {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div style={{ maxWidth: "400px", margin: "auto", padding: "20px" }}>
-        <h2>Task Manager</h2>
-        <input
-          type="text"
-          value={newTask}
-          onChange={(e) => setNewTask(e.target.value)}
-          placeholder="Neue Aufgabe..."
-          style={{ marginRight: "10px" }}
-        />
-        <button onClick={addTask}>Aufgabe Hinzufügen</button>
-        {tasks.map((task, index) => (
-          <TaskItem key={task.id} index={index} task={task} moveTask={moveTask} removeTask={removeTask} />
-        ))}
+      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+        <div style={{ maxWidth: "400px", padding: "20px", fontFamily: "Comic Sans MS, sans-serif", border: "2px solid black", borderRadius: "10px", backgroundColor: "#f8f8f8" }}>
+          <h2 style={{ textAlign: "center", backgroundColor: "black", color: "white", padding: "5px", borderRadius: "5px" }}>📋 Task Manager</h2>
+          <div style={{ display: "flex", gap: "10px", marginBottom: "10px" }}>
+            <input
+              type="text"
+              value={newTask}
+              onChange={(e) => setNewTask(e.target.value)}
+              placeholder="+ Neue Aufgabe..."
+              style={{ flex: 1, padding: "5px", border: "1px solid black" }}
+            />
+            <button onClick={addTask} style={{ padding: "5px", backgroundColor: "black", color: "white", border: "none", cursor: "pointer" }}>➕</button>
+          </div>
+          {tasks.map((task, index) => (
+            <TaskItem key={task.id} index={index} task={task} moveTask={moveTask} removeTask={removeTask} />
+          ))}
+        </div>
       </div>
     </DndProvider>
   );
@@ -75,16 +80,21 @@ const TaskItem = ({ task, index, moveTask, removeTask }) => {
       style={{
         padding: "10px",
         marginBottom: "5px",
-        marginTop: "5px",
-        backgroundColor: isDragging ? "#ddd" : "#f8f8f8",
-        border: "1px solid #ccc",
+        backgroundColor: isDragging ? "#ffc107" : "white",
+        border: isDragging ? "2px dashed black" : "2px solid black",
         cursor: "grab",
         display: "flex",
         justifyContent: "space-between",
+        alignItems: "center",
+        fontFamily: "Comic Sans MS, sans-serif",
+        opacity: isDragging ? 0.6 : 1,
+        transform: isDragging ? "scale(1.05)" : "none",
+        transition: "all 0.2s ease",
       }}
     >
+      <span style={{ cursor: "grab", marginRight: "10px" }}>⋮</span>
       {task.text}
-      <button onClick={() => removeTask(task.id)} style={{ marginLeft: "10px" }}>❌</button>
+      <button onClick={() => removeTask(task.id)} style={{ background: "none", border: "none", fontSize: "16px", cursor: "pointer" }}>❌</button>
     </div>
   );
 };
