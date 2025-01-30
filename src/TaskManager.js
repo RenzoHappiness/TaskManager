@@ -75,6 +75,7 @@ const TaskItem = ({ task, index, moveTask, removeTask }) => {
       style={{
         padding: "10px",
         marginBottom: "5px",
+        marginTop: "5px",
         backgroundColor: isDragging ? "#ddd" : "#f8f8f8",
         border: "1px solid #ccc",
         cursor: "grab",
