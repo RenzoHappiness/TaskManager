@@ -10,7 +10,7 @@ const TaskManager = () => {
     { id: 2, text: "📂 Drag & Drop hinzufügen" },
     { id: 3, text: "🚀 Projekt auf GitHub hochladen" },
     { id: 4, text: "🧑‍🎨 Balsamiq-Stil hinzufügen" },
-    ]);
+  ]);
   const [newTask, setNewTask] = useState("");
 
   const moveTask = (dragIndex, hoverIndex) => {
@@ -89,7 +89,7 @@ const TaskItem = ({ task, index, moveTask, removeTask }) => {
         fontFamily: "Comic Sans MS, sans-serif",
         opacity: isDragging ? 0.6 : 1,
         transform: isDragging ? "scale(1.05)" : "none",
-        transition: "all 0.2s ease",
+        transition: "transform 0.3s ease, background-color 0.3s ease, opacity 0.3s ease",
       }}
     >
       <span style={{ cursor: "grab", marginRight: "10px" }}>⋮</span>
